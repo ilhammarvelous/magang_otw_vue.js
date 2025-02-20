@@ -1,36 +1,13 @@
 <template>
-    <nav class="absolute top-0 left-0 w-full z-10 bg-blue-500 md:flex-row md:flex-nowrap md:justify-start flex items-center p-3">
-        <div class="w-full mx-autp items-center flex md:flex-nowrap flex-wrap md:px-10 px-4">
-        <!-- Brand -->
-        <a href="" class="text-white hover:text-blue-200 ml-3 text-md tracking-wide lg:inline-block">
-            Mahasiswa
-        </a>
-        <router-link :to="{ name: 'matakuliah.index'}" class="text-white hover:text-blue-200 ml-3 text-md tracking-wide lg:inline-block">
-            Mata Kuliah
-        </router-link>
-        <!-- Form -->
+    <div>
+        <Navbar />
+    </div>
 
-            <!-- User -->
-            <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
-                <user-dropdown />
-            </ul>
-        </div>
-        <div class="flex justify-end mr-11">
-            <button class="flex items-center p-2 px-3 text-md font-medium tracking-wide text-white bg-blue-700 rounded-lg hover:bg-blue-600" @click.prevent="logout()">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-                    </svg>
-                    Logout
-            </button>
-        </div>
-    </nav>
-
-    <div class="p-10 bg-gray-200 h-screen mt-10">
+    <div class="p-10 bg-gray-200 min-h-screen mt-10">
         <h1 class="text-3xl ml-5 mt-5 uppercase">Tabel Mahasiswa</h1>
         <div class="grid grid-cols-2 gap-6 mt-5">
             <div class="ml-6 mt-2">
-
-                <button @click="isModalOpen = true" class="flex items-center p-2 text-md font-medium tracking-wide text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition w-28">
+                <button @click="showModalCreate = true" class="flex items-center p-2 text-md font-medium tracking-wide text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition w-28">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -38,7 +15,27 @@
                 </button>
 
                 <!-- Modal create -->
-                <createModalMhs v-if="isModalOpen" @close="isModalOpen = false" @updateData="fetchMahasiswa(page)"/>
+                <createModalMhs 
+                    v-if="showModalCreate" 
+                    @close="showModalCreate = false" 
+                    @updateData="fetchMahasiswa(page)"
+                />
+
+                <!-- Modal detail -->
+                <DetailModalMhs 
+                    v-if="showModalDetail"
+                    :mahasiswaId = "selectedId"
+                    @close="showModalDetail = false" 
+                />
+
+                <!-- Modal edit -->
+                <EditModalMhs 
+                    v-if="showModalEdit"
+                    :mahasiswaId = "selectedId"
+                    @close="showModalEdit = false"
+                    @updated="fetchMahasiswa"
+                />
+
             </div>
             <form
                     class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-6">
@@ -69,8 +66,6 @@
                         <th class="p-3 text-md font-semibold tracking-wide text-left">No</th>
                         <th class="p-3 text-md font-semibold tracking-wide text-left">Nim</th>
                         <th class="p-3 text-md font-semibold tracking-wide text-left">Nama</th>
-                        <th class="p-3 text-md font-semibold tracking-wide text-left">No hp</th>
-                        <th class="p-3 text-md font-semibold tracking-wide text-left">Agama</th>
                         <th class="p-3 text-md font-semibold tracking-wide text-left">Prodi</th>
                         <th class="p-3 text-md font-semibold tracking-wide text-left">Status</th>
                         <th class="p-3 text-md font-semibold tracking-wide text-left">Aksi</th>
@@ -90,8 +85,6 @@
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ index + mahasiswas.data.from }}</td>
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap"><span class="text-blue-500">{{ mahasiswa.nim }}</span></td>
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ mahasiswa.nama }}</td>
-                            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ mahasiswa.no_hp }}</td>
-                            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ mahasiswa.agama }}</td>
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ mahasiswa.prodi }}</td>
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
                                 <span :class="{
@@ -108,17 +101,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     </svg>
                                 </button>
-
                                 <button @click="editMhs(mahasiswa.id)" class="flex items-center p-2 px-3 mx-1 text-md font-medium tracking-wide text-white bg-blue-600 rounded-lg hover:bg-blue-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-
-                                <!-- <router-link :to="{ name: 'mahasiswa.edit', params:{id: mahasiswa.id}}" >
-                                    
-                                </router-link> -->
-
                                 <button class="flex items-center p-2 px-3 mx-1 text-md font-medium tracking-wide text-white bg-red-600 rounded-lg hover:bg-red-500" @click.prevent="destroy(mahasiswa.id, index)">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -146,66 +133,45 @@
                 'px-4 py-2 rounded',
                 currentPage === page ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-400'
                 ]"
-                @click="fetchMahasiswa(page)"
-            >
+                @click="fetchMahasiswa(page)">
                 {{ page }}
             </button>
 
             <button
                 class="px-3 py-2 bg-white text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50"
                 :disabled="currentPage === totalPages"
-                @click="fetchMahasiswa(currentPage + 1)"
-            >
+                @click="fetchMahasiswa(currentPage + 1)"    >
                 Next >>
             </button>
-
-            <!-- Modal detail -->
-            <DetailModalMhs 
-                v-if="showModalDetail"
-                :mahasiswaId = "selectedId"
-                @close="showModalDetail = false" 
-            />
-
-            <!-- Modal edit -->
-            <EditModalMhs 
-                v-if="showModalEdit"
-                :mahasiswaId = "selectedId"
-                @close="showModalEdit = false"
-                @updated="fetchMahasiswa"
-            />
         </div>
     </div>
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue';
 import createModalMhs from '@/components/createModalMhs.vue';
 import DetailModalMhs from '@/components/DetailModalMhs.vue';
 import EditModalMhs from '@/components/EditModalMhs.vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import swal from 'sweetalert';
 
 export default {
     components:{
+        Navbar,
         createModalMhs,
         DetailModalMhs,
         EditModalMhs
     },
     setup(){
-        let isModalOpen = ref(false);
+        let showModalCreate = ref(false);
         let mahasiswas = ref([]);
         const showModalDetail = ref(false);
         const showModalEdit = ref(false);
         const selectedId = ref(null);
         const currentPage = ref(1);
         const totalPages = ref(0);
-
         const loading = ref(true);
-        const router = useRouter();
-
-        const bukaModal = () => isModalOpen.value = true;
-        const tutupModal = () => isModalOpen.value = false; 
         
         onMounted(() => {
             fetchMahasiswa();
@@ -224,7 +190,6 @@ export default {
                 mahasiswas.value.data = response.data.data
                 currentPage.value = response.data.data.current_page
                 totalPages.value = response.data.data.last_page;
-                
             } catch (err) {
                 console.error('Gagal mengambil data:', err.response ? err.response.data : err.message);
             } finally {
@@ -248,7 +213,6 @@ export default {
                             return;
                         }
 
-                        // Hapus data di backend
                         await axios.delete(`http://127.0.0.1:8000/api/mahasiswas/${id}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -285,32 +249,6 @@ export default {
             showModalEdit.value = true
         }
 
-        function logout(){
-            const token = localStorage.getItem('token');
-
-            axios
-            .get(`http://127.0.0.1:8000/api/user/logout`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then(() => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('authenticated');
-                router.push({
-                    name: 'login'
-                })
-                swal({
-                    title:'Berhasil!',
-                    text: 'Berhasil logout',
-                    icon: 'success',
-                })
-            })
-            .catch(() => {
-                swal('Error', 'Terjadi kesalahan', 'error');
-            });
-        }
-
         return {
             mahasiswas,
             currentPage,
@@ -318,21 +256,18 @@ export default {
             destroy,
             fetchMahasiswa,
             loading,
-            logout,
             detailMhs,
             editMhs,
             showModalDetail,
             showModalEdit,
             selectedId,
-            isModalOpen,
-            bukaModal,
-            tutupModal,
+            showModalCreate,
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
     .lds-roller,
     .lds-roller div,
     .lds-roller div:after {

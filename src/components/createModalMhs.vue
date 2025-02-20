@@ -67,8 +67,7 @@
             class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
             name="agama"
             id="agama"
-            v-model="mahasiswa.agama"
-          >
+            v-model="mahasiswa.agama">
             <option value="" disabled selected>-- Pilih Agama --</option>
             <option value="Islam">Islam</option>
             <option value="Protestan">Protestan</option>
@@ -130,10 +129,10 @@
 </template>
 
 <script>
-import { reactive, defineEmits } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive } from 'vue'
 import axios from 'axios'
 import swal from 'sweetalert'
+
 export default {
   setup(_,{emit}) {
     const mahasiswa = reactive({
@@ -146,8 +145,6 @@ export default {
     })
 
     const validation = reactive({})
-
-    const router = useRouter()
 
     function store() {
       const token = localStorage.getItem('token')
@@ -188,7 +185,6 @@ export default {
         return {
             mahasiswa,
             validation,
-            router,
             store,
         }
     },

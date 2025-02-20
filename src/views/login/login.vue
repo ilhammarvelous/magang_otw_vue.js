@@ -72,14 +72,20 @@ export default {
 
     const router = useRouter();
     const validation = reactive({});
+    const user = ref(null);
 
     const login = async () => {
       try {
         const response = await axios.post(`http://127.0.0.1:8000/api/user/login`, auth);
 
         const token = response.data.token;
+        const user = response.data.name;
+        const id = response.data.id;
+
         localStorage.setItem('authenticated', true);
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user_id', id);
 
         const otpResponse = await axios.post(`http://127.0.0.1:8000/api/otp/generate`,
           {},
@@ -89,7 +95,6 @@ export default {
             },
           }
         );
-        console.log(otpResponse);
 
         if(otpResponse.data.success){
           router.push({ name: 'verifikasi'});

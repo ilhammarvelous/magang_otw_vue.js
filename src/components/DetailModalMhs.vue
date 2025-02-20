@@ -39,17 +39,19 @@
             </div>
         </div>
     </div>
-    </template>
+</template>
     
 <script>
     import { reactive, ref, watch } from 'vue';
     import axios from 'axios';
+    import { useRouter } from 'vue-router';
     
     export default {
         props:{
             mahasiswaId: Number
         },
         setup(props) {
+            const router = useRouter();
             const mahasiswa = reactive({});
             const loading = ref(true);
             const error = ref(null);
@@ -74,7 +76,6 @@
                     },
                 })
                 .then((response) => {
-                    // Object.assign(mahasiswa, response.data.data)
                     mahasiswa.nim = response.data.data.nim;
                     mahasiswa.nama = response.data.data.nama;
                     mahasiswa.no_hp = response.data.data.no_hp;

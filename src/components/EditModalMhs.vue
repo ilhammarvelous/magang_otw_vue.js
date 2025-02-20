@@ -133,6 +133,7 @@
     import { reactive, ref, watch } from 'vue'
     import axios from 'axios'
     import swal from 'sweetalert'
+    import { useRouter } from 'vue-router';
 
 export default {
     props:{
@@ -147,6 +148,8 @@ export default {
         prodi: '',
         status: '',
         })
+
+        const router = useRouter();
         const loading = ref(true);
         const error = ref(null);
 

@@ -4,7 +4,6 @@
             <h2 class="text-xl font-bold mb-4">Verifikasi Kode OTP</h2>
             <p class="text-gray-600 mb-4">Masukkan kode OTP yang dikirim ke WhatsApp</p>
 
-            <!-- Input OTP -->
             <div class="flex justify-center space-x-2 mb-4">
                 <input
                     v-for="(digit, index) in otp"
@@ -18,12 +17,10 @@
                 />
             </div>
 
-            <!-- Timer -->
             <div v-if="timer > 0" class="text-sm text-gray-500 mb-4">
                 Waktu tersisa : {{ formatTime }} 
             </div>
 
-            <!-- Tombol Verifikasi -->
             <button
                 class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
                 @click="verifyOtp"
@@ -32,7 +29,6 @@
                 Verifikasi
             </button>
 
-            <!-- Kirim Ulang OTP -->
             <p class="text-gray-500 text-sm mt-4">
             Tidak menerima kode? 
                 <button class="text-blue-500 hover:underline" 
@@ -87,13 +83,14 @@ export default {
                         },
                     }
                 );
+                
                 if (response.data.success) {
                     swal({
                         title: "Berhasil",
                         text: "OTP berhasil diverifikasi!",
                         icon: "success",
                     }).then(() => {
-                        router.push({ name: 'index' });
+                        router.push({ name: 'mahasiswa.index' });
                     });
                 }
             } catch (err) {
