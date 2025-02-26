@@ -81,11 +81,13 @@ export default {
         const token = response.data.token;
         const user = response.data.name;
         const id = response.data.id;
+        const allowedMenus = response.data.allowedMenus;
 
         localStorage.setItem('authenticated', true);
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('user_id', id);
+        localStorage.setItem('user_id', id);  
+        localStorage.setItem('allowedMenus', JSON.stringify(allowedMenus));
 
         const otpResponse = await axios.post(`http://127.0.0.1:8000/api/otp/generate`,
           {},
@@ -99,18 +101,48 @@ export default {
         if(otpResponse.data.success){
           router.push({ name: 'verifikasi'});
         } else {
-          swal('Error', 'Gagal mengirim OTP', 'error');
+          swal({
+            title: 'Error!',
+            text: 'Gagal mengirim OTP',
+            icon: 'error',
+            showConfirmButton: true,
+            timer: 1500
+          });
         }
       } catch (err) {
           if (err.response && err.response.status === 429) {
-            swal('Terlalu banyak percobaan login. Silakan coba lagi nanti.');
-          } else if(err.response && err.response.status === 422){
-            Object.assign(validation, err.response.data.data);
-            swal('Oops!', 'Silahkan isi form tersebut dengan data anda !!!', 'error');
-          } else if(err.response && err.response.status === 401){
-            swal('Gagal', 'Email atau password salah !!', 'error');
+              swal({
+                  title: 'Oops!',
+                  text: 'Silakan coba lagi nanti.',
+                  icon: 'warning',
+                  showConfirmButton: true,
+                  timer: 1500
+              });
+          } else if (err.response && err.response.status === 422) {
+              Object.assign(validation, err.response.data.data);
+              swal({
+                  title: 'Oops!',
+                  text: 'Silahkan isi form tersebut dengan data anda !!!',
+                  icon: 'error',
+                  showConfirmButton: true,
+                  timer: 1500
+              });
+          } else if (err.response && err.response.status === 401) {
+              swal({
+                  title: 'Gagal',
+                  text: 'Email atau password salah !!',
+                  icon: 'error',
+                  showConfirmButton: true,
+                  timer: 1500
+              });
           } else {
-            swal('Error', (err.response?.data?.message || 'Terjadi kesalahan.'));
+              swal({
+                  title: 'Error',
+                  text: (err.response?.data?.message || 'Terjadi kesalahan.'),
+                  icon: 'error',
+                  showConfirmButton: true,
+                  timer: 1500
+              });
           }
         }
     };

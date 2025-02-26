@@ -160,6 +160,8 @@ export default {
             title: 'Berhasil!',
             text: 'Data mahasiswa berhasil ditambahkan.',
             icon: 'success',
+            showConfirmButton: true,
+            timer: 1500
           })
             emit('close') 
             emit('updateData')
@@ -175,9 +177,21 @@ export default {
         .catch((err) => {
           if (err.response && err.response.status === 422) {
             Object.assign(validation, err.response.data.errors)
-            swal('Gagal!', 'Terjadi kesalahan, Silahkan cek inputan data !!!', 'error')
+            swal({
+                title: 'Gagal!',
+                icon: 'error',
+                text: 'Terjadi kesalahan, Silahkan cek inputan anda !!!',
+                showConfirmButton: true,
+                timer: 2000
+              });
           } else {
-            swal('Error', 'Terjadi kesalahan pada server.', 'error')
+            swal({
+                title: 'Gagal!',
+                icon: 'error',
+                text: 'Terjadi kesalahan pada server.',
+                showConfirmButton: true,
+                timer: 2000
+              });
           }
         })
     }

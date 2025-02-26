@@ -181,7 +181,6 @@ const selectedMenus = ref([]);
 
     const openEditModal = (userId) => {
         selectedUser.value = userId;
-        // fetchUserMenus(userId);
         showModalEdit.value = true
     }
 

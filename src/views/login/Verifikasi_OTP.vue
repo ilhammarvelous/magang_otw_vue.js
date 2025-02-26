@@ -89,6 +89,8 @@ export default {
                         title: "Berhasil",
                         text: "OTP berhasil diverifikasi!",
                         icon: "success",
+                        showConfirmButton: true,
+                        timer: 1500
                     }).then(() => {
                         router.push({ name: 'mahasiswa.index' });
                     });
@@ -147,6 +149,8 @@ export default {
                         title: "Berhasil",
                         text: "Berhasil mengirim ulang kode OTP",
                         icon: "success",
+                        showConfirmButton: true,
+                        timer: 1500
                     })
 
                     clearInterval(interval);

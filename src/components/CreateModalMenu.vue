@@ -73,6 +73,8 @@ async function store() {
             title: 'Berhasil!',
             text: 'Data menu berhasil ditambahkan.',
             icon: 'success',
+            showConfirmButton: true,
+            timer: 2000
         });
 
         emit('close');
@@ -83,10 +85,22 @@ async function store() {
         });
     } catch (err) {
         if (err.response && err.response.status === 422) {
-            Object.assign(validation, err.response.data.errors);
-            swal('Gagal!', 'Terjadi kesalahan, Silahkan cek inputan data !!!', 'error');
-        } else {
-            swal('Error', 'Terjadi kesalahan pada server.', 'error');
+                Object.assign(validation, err.response.data.errors)
+                swal({
+                    title: 'Gagal!',
+                    icon: 'error',
+                    text: 'Terjadi kesalahan, Silahkan cek inputan anda !!!',
+                    showConfirmButton: true,
+                    timer: 2000
+                });
+            } else {
+                swal({
+                    title: 'Gagal!',
+                    icon: 'error',
+                    text: 'Terjadi kesalahan pada server.',
+                    showConfirmButton: true,
+                    timer: 2000
+                });
         }
     }
 }

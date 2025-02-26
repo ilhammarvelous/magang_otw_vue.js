@@ -108,6 +108,8 @@ const logout = () => {
                 title:'Berhasil!',
                 text: 'Berhasil logout',
                 icon: 'success',
+                showConfirmButton: true,
+                timer: 1500
             })
         })
         .catch(() => {

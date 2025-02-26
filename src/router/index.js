@@ -76,9 +76,7 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = JSON.parse(localStorage.getItem('authenticated'));
   const allowedMenus = JSON.parse(localStorage.getItem('allowedMenus')) || [];
 
-  // console.log(allowedMenus);
-
-  const publicPages = ['login', 'register'];
+  const publicPages = ['login', 'register', 'verifikasi'];
 
   if (to.meta.requiredMenu && !allowedMenus.includes(to.meta.requiredMenu)) {
     console.warn(`Akses ditolak ke: ${to.path} - Tidak ada izin menu`);

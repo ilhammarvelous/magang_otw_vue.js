@@ -74,8 +74,6 @@
           <p v-if="validation.no_wa" class="mt-1 text-sm text-red-500">{{ validation.no_wa[0] }}</p>
         </div>
 
-       
-
         <!-- Tombol Submit -->
         <div class="col-span-2">
           <button
@@ -128,12 +126,24 @@ async function store() {
             password: '',
         });
     } catch (err) {
-        if (err.response && err.response.status === 422) {
-            Object.assign(validation, err.response.data.errors);
-            swal('Gagal!', 'Terjadi kesalahan, Silahkan cek inputan data !!!', 'error');
-        } else {
-            swal('Error', 'Terjadi kesalahan pada server.', 'error');
-        }
+      if (err.response && err.response.status === 422) {
+            Object.assign(validation, err.response.data.errors)
+            swal({
+                title: 'Gagal!',
+                icon: 'error',
+                text: 'Terjadi kesalahan, Silahkan cek inputan anda !!!',
+                showConfirmButton: true,
+                timer: 2000
+              });
+          } else {
+            swal({
+                title: 'Gagal!',
+                icon: 'error',
+                text: 'Terjadi kesalahan pada server.',
+                showConfirmButton: true,
+                timer: 2000
+              });
+          }
     }
 }
 

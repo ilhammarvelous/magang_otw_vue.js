@@ -128,6 +128,8 @@
                 title: 'Berhasil!',
                 text: 'Otorisasi menu berhasil diperbarui',
                 icon: 'success',
+                showConfirmButton: true,
+                timer: 2000
             });
             emit('close');
         } catch (err) {

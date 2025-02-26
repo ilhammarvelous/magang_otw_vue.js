@@ -198,6 +198,8 @@ const loading = ref(true);
                             title: "Berhasil!",
                             text: "Data menu berhasil dihapus",
                             icon: "success",
+                            showConfirmButton: true,
+                            timer: 2000
                         });
                     } catch (err) {
                         swal("Error!", err.response?.data?.message || "Terjadi kesalahan pada server.", "error");

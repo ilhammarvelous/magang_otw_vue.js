@@ -213,6 +213,8 @@
                             title: "Berhasil!",
                             text: "Data mata kuliah berhasil dihapus",
                             icon: "success",
+                            showConfirmButton: true,
+                            timer: 2000
                         });
                     } catch (err) {
                         swal("Error!", err.response?.data?.message || "Terjadi kesalahan pada server.", "error");

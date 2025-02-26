@@ -204,6 +204,8 @@ export default {
                     title: 'Berhasil!',
                     text: 'Data mahasiswa berhasil diperbarui.',
                     icon: 'success',
+                    showConfirmButton: true,
+                    timer: 2000
                 })
                 emit('updated')
                 emit('close')

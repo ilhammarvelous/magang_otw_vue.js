@@ -167,6 +167,8 @@
                     title: 'Berhasil!',
                     text: 'Data mata kuliah berhasil diperbarui.',
                     icon: 'success',
+                    showConfirmButton: true,
+                    timer: 2000
                 })
                 emit('close')
                 emit('updateData')

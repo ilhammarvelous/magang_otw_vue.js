@@ -178,15 +178,23 @@ const toggleDropdown = () => {
             }
         })
         .catch((err) => {
-            if (err.response) {
-                if (err.response.status === 422) {
-                    Object.assign(validation, err.response.data.errors);
-                    swal('Gagal!', 'Terjadi kesalahan, Silahkan cek inputan data !!!', 'error');
-                } else {
-                    swal('Error', `Terjadi kesalahan: ${err.response.data.message || 'Server error'}`, 'error');
-                }
+          if (err.response && err.response.status === 422) {
+                Object.assign(validation, err.response.data.errors)
+                swal({
+                    title: 'Gagal!',
+                    icon: 'error',
+                    text: 'Terjadi kesalahan, Silahkan cek inputan anda !!!',
+                    showConfirmButton: true,
+                    timer: 2000
+                });
             } else {
-                swal('Error', 'Tidak dapat terhubung ke server.', 'error');
+                swal({
+                    title: 'Gagal!',
+                    icon: 'error',
+                    text: 'Terjadi kesalahan pada server.',
+                    showConfirmButton: true,
+                    timer: 2000
+                });
             }
         });
   }

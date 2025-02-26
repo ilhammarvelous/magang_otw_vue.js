@@ -129,14 +129,28 @@ export default {
             title: 'Berhasil!',
             text: 'Berhasil mendaftar. Silahkan login menggunakan email dan password',
             icon: 'success',
+            showConfirmButton: true,
+            timer: 2000
           })
         })
         .catch((err) => {
           if (err.response && err.response.status === 422) {
             Object.assign(validation, err.response.data.data)
-            swal('Oops', 'Silahkan isi form tersebut dengan data anda !!!', 'error')
+            swal({
+                title: 'Gagal!',
+                icon: 'error',
+                text: 'Terjadi kesalahan, Silahkan cek inputan data anda !!!',
+                showConfirmButton: true,
+                timer: 1500
+              });
           } else {
-            swal('Error', 'Terjadi kesalahan pada server.', 'error')
+            swal({
+                title: 'Gagal!',
+                icon: 'error',
+                text: 'Terjadi kesalahan pada server.',
+                showConfirmButton: true,
+                timer: 1500
+              });
           }
         })
     }
