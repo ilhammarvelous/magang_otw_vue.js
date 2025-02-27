@@ -70,6 +70,8 @@ const closeDropdown = (event) => {
 };
 
 onMounted(() => {
+    
+
     const simpanUser = localStorage.getItem('user');
     try {
         user.value = JSON.parse(simpanUser);

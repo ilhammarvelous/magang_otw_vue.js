@@ -96,7 +96,13 @@ export default {
                     });
                 }
             } catch (err) {
-                swal('Error', err.response?.data?.message || "Terjadi kesalahan saat verifikasi OTP. Coba lagi!", 'error');
+                swal({
+                    title: "Error!",
+                    icon: "error",
+                    text: err.response?.data?.message || "Terjadi kesalahan saat verifikasi OTP. Coba lagi!",
+                    showConfirmButton: true,
+                    timer: 2000
+                });
             }
         };
 
@@ -113,7 +119,13 @@ export default {
                     timer.value -= 1;
                 } else {
                     clearInterval(interval);
-                    swal('Error', "Waktu habis! Anda harus mengirim ulang kode OTP.", 'error');
+                    swal({
+                        title: "Error!",
+                        icon: "error",
+                        text: "Waktu habis! Anda harus mengirim ulang kode OTP.",
+                        showConfirmButton: true,
+                        timer: 2000
+                    });
                 }
             }, 1000);
         };
@@ -147,8 +159,8 @@ export default {
                 if (response.data.success) {
                     swal({
                         title: "Berhasil",
-                        text: "Berhasil mengirim ulang kode OTP",
                         icon: "success",
+                        text: response.data.message,
                         showConfirmButton: true,
                         timer: 1500
                     })
@@ -162,7 +174,13 @@ export default {
                         isResendDisabled.value = false;
                     }, 60000);
                 } else {
-                    swal('Error', response.data.message, 'error');
+                    swal({
+                        title: "Error",
+                        icon: "error",
+                        text: response.data.message,
+                        showConfirmButton: true,
+                        timer: 1500
+                    })
                 }
             } catch (err) {
                 swal('Error', err.response?.data?.message || 'Gagal mengirim ulang OTP');

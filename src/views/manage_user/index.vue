@@ -29,12 +29,12 @@
                 /> -->
 
                 <!-- Modal edit -->
-                <!-- <EditModalMatkul 
+                <EditModalUser 
                     v-if="showModalEdit"
-                    :matkulId = "selectedId"
+                    :userId = "selectedId"
                     @close="showModalEdit = false"
-                    @updateData="GetMatkul(page)"
-                /> -->
+                    @updateData="getUser(page)"
+                />
 
             </div>
             <form
@@ -86,7 +86,7 @@
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ user.email }}</td>
                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ user.no_wa }}</td>
                             <td class="flex items-center mt-2 mb-2">
-                                <button class="flex items-center p-2 px-3 mx-1 text-md font-medium tracking-wide text-white bg-blue-600 rounded-lg hover:bg-blue-500">
+                                <button @click="editUser(user.id)" class="flex items-center p-2 px-3 mx-1 text-md font-medium tracking-wide text-white bg-blue-600 rounded-lg hover:bg-blue-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
@@ -139,6 +139,7 @@
 <script setup>
 import Navbar from '@/components/Navbar.vue';
 import CreateModalUser from '@/components/CreateModalUser.vue';
+import EditModalUser from '@/components/EditModalUser.vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import swal from 'sweetalert';
@@ -148,6 +149,8 @@ let showModalCreate = ref(false);
 const currentPage = ref(1);
 const totalPages = ref(0);
 const loading = ref(true);
+const selectedId = ref(null);
+const showModalEdit = ref(false);
 const authUserId = ref(null);
 
 onMounted(() => {
@@ -224,6 +227,11 @@ const destroy = async (id) => {
                 }
             });
     };
+
+function editUser(id){
+    selectedId.value = id
+    showModalEdit.value = true
+}
 
 </script>
 

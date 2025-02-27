@@ -118,8 +118,8 @@
                 matakuliah.nama_mk = result.data.data.nama_mk;
                 matakuliah.sks = result.data.data.sks;
             }).catch((err) => {
-                console.log(err.response.data);
-                swal('Error', 'Gagal memuat data mata kuliah!', 'error');
+                // console.error(err.response.data);
+                swal('Error', err.response.data, 'error');
             });
     }
 

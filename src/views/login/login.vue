@@ -106,7 +106,7 @@ export default {
             text: 'Gagal mengirim OTP',
             icon: 'error',
             showConfirmButton: true,
-            timer: 1500
+            timer: 2000
           });
         }
       } catch (err) {
@@ -116,7 +116,7 @@ export default {
                   text: 'Silakan coba lagi nanti.',
                   icon: 'warning',
                   showConfirmButton: true,
-                  timer: 1500
+                  timer: 2000
               });
           } else if (err.response && err.response.status === 422) {
               Object.assign(validation, err.response.data.data);
@@ -125,7 +125,7 @@ export default {
                   text: 'Silahkan isi form tersebut dengan data anda !!!',
                   icon: 'error',
                   showConfirmButton: true,
-                  timer: 1500
+                  timer: 2000
               });
           } else if (err.response && err.response.status === 401) {
               swal({
@@ -133,7 +133,7 @@ export default {
                   text: 'Email atau password salah !!',
                   icon: 'error',
                   showConfirmButton: true,
-                  timer: 1500
+                  timer: 2000
               });
           } else {
               swal({
@@ -141,7 +141,7 @@ export default {
                   text: (err.response?.data?.message || 'Terjadi kesalahan.'),
                   icon: 'error',
                   showConfirmButton: true,
-                  timer: 1500
+                  timer: 2000
               });
           }
         }

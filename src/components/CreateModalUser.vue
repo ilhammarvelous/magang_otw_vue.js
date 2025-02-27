@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+  <div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
     <div class="relative bg-white z-50 p-8 rounded-lg shadow-xl w-full max-w-3xl">
       <h2 class="text-2xl font-bold mb-6 text-gray-800">Tambah user baru</h2>
       <div class="absolute top-0 right-0 p-3">
